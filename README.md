@@ -3,16 +3,19 @@ Reads the RaboBank csv file and translates it to an Excel workbook.
 I think this is only interesting for Dutch people who actually use the RaboBank so I will continue in Dutch.
 
 Ieder jaar download ik een csv file van de rabobank. Ik werk met een MacBook en die kan de csv files aardig goed inlezen. Maar als je wat beter wilt kijken naar al die rekeningen en transacties ontkom je niet aan Excel.
-Tot vorig jaar was deed ik dit allemaal handmatig met als gevolg dat de handleiding die ik schreef iedere keer weer veranderde omdat ik het eigenlijk niet meer wist hoe ik het de vorige keer had gedaan.
+Tot 2021 deed ik dit allemaal handmatig met als gevolg dat de handleiding die ik schreef iedere keer weer veranderde omdat ik het eigenlijk niet meer wist hoe ik het de vorige keer had gedaan.
 Samengevat wil ik de volgende features hebben in een uiteindelijke Excel File.
 
 - Datums zijn datums, valuta zijn valuta 
 - Alle transacties van al mijn bankrekening in een tabel zodat ik gauw kan filteren.
+- Alle transacties worden gecategoriseerd naar Inkomsten, Uitgaven, Sparen en Beleggen
+- 
+Met enig handmatig aanmaken van files wil ik het volgende krijgen:
 - Alle transacties bevatten/krijgen een categorie die ik grootboek en kleinboek heb genoemd.
-- Een extra categorie toevoegen voor cash flows dwz zijn het uitgaven, inkomsten, interne overboekingen, beleggingen
 - Additionele worksheet per rekening om een saldo verloop te genereren
 - Additionele worksheet met een pivot tabel boekingen per grootboek/kleinboek per maand.
 - Mogelijkheid om meerdere csv files op te nemen zodat je op maand of weekbasis kunt werken.
+- Mogelijke duplicaten eruit fileteren
 
 --------------------------------------------------------------------------------------------
 Directory structuur **bold** zijn directories
@@ -22,12 +25,16 @@ Directory structuur **bold** zijn directories
 		- Grootboeklijst.csv			Bevat de grootboek codes bv: A1 Inkomsten Loon 
 		- mapdescription-mappingtabel.csv	Bevat stukjes tekst in kolom description die verbonden zijn aan een grootboek code
 		- maptegenpartij-maptegenpartij.csv	Bevat stukjes tekst in kolom tegenpartij die verbonden zijn aan een grootboek code
-		- **2022**
-			- volgnr_RABO2022.csv
+  - 		- accountnumbers.csv 			Bevat de rekening nummers 1: betaalrekeningen 2: Spaarrekeningen 3: beleggingen/lijrentes
+		- **2024**
+			- volgnr_RABO2022.csv		Handmatig koppel een volgnummer aan een kleinboek code. 
 			- **invoer**
-				- _all RaboBank csv files which contain transaction. from that year
-				- for example: CSV_A_20220205_124700.csv			- 
-		- **2021** etc
+				- _all RaboBank csv_a files which contain transaction. from that year
+				- for example: CSV_A_20220205_124700.csv
+    				
+				- _all RaboBank csv_cc files which contain creditcard transactions
+				- for example: CSV_CC_20220205_124700.csv			- 
+		- **2025** etc
 
 
 
@@ -35,14 +42,15 @@ Wat je als gebruiker wel moet doen is het volgende:
 
 Eenmalige actie:
 
-- Aangeven welke jouw eigen rekeningen zijn
+- Aangeven welke jouw eigen rekeningen zijn en wat voor rekeningen het zijn (file: accountnumbers.csv)
 - Welke daarvan zijn spaarekeningen en welke betaal rekeningen
 - Als je beleggingsrekeningen hebt geef die dan ook op
 - Je directory structuur maken of die van mij overnemen
-- Creeer een mapping tabellen:
-	- volgnr_RABO2022.csv				Een grootboek code voor ieder Volgnummer 
+- Creeer mapping tabellen:
+
 	- mapdescription-mappingtabel.csv		Een grootboek code voor iedere description (iets wat in description voorkomt)
 	- maptegenpartij-maptegenpartij.csv		Een grootboek code voor iedere tegenpartij (iets wat in tegenpartij voorkomt)
+  	- volgnr_RABO2022.csv	(optioneel)		Een kleinboek code voor ieder Volgnummer 
 		
 Structuur CSV Grootboek lijst (kun je naar eigen behoefte invullen, basis file is toegevoegd.)
 
