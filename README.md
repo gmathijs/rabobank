@@ -30,10 +30,10 @@ Directory structuur **bold** zijn directories
 			- volgnr_RABO2024.csv		Handmatig koppel een volgnummer aan een kleinboek code. 
 			- **invoer**
 				- _all RaboBank csv_a files which contain transaction. from that year
-				- for example: CSV_A_20220205_124700.csv
+				- for example: CSV_A_20240205_124700.csv
     				
 				- _all RaboBank csv_cc files which contain creditcard transactions
-				- for example: CSV_CC_20220205_124700.csv			- 
+				- for example: CSV_CC_20240205_124700.csv			- 
 		- **2025** etc
 
 
