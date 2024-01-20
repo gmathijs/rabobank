@@ -1,0 +1,61 @@
+Code,Grootboek,Kleinboek
+A1,A-Inkomsten,1-Loon
+A2,A-Inkomsten,2-Overige Inkomsten
+A3,A-Inkomsten,3-Belasting teruggaaf
+A4,A-Inkomsten,4-Uitkering
+A5,A-Inkomsten,5-Pensioen
+A6,A-Inkomsten,6-Lijfrente
+B1,B-Woning,1-Hypotheek
+B2,B-Woning,2-Aflossing
+B3,B-Woning,3-GasLicht
+B4,B-Woning,4-Water
+B5,B-Woning,5-OZB-Belasting
+B6,B-Woning,6-Verzekering
+C1,C-Gezondheid,1-Zorg-Verzekering
+C2,C-Gezondheid,2-Zorgkosten
+D1,D-Voertuigen,1-Verzekering Voertuigen
+D2,D-Voertuigen,2-Belasting Voertuigen
+D3,D-Voertuigen,3-Benzine
+D4,D-Voertuigen,4-Onderhoud voertuigen
+D5,D-Voertuigen,5-Aanschaf
+D6,D-Voertuigen,6-Boetes
+E1,E-Pand,1-WaterLicht - Pand
+E2,E-Pand,2-Verzekering
+E3,E-Pand,3-Contributies
+E4,E-Pand,4-OZB Pand
+E5,E-Pand,5-Aanschaf gereedschap
+E6,E-Pand,6-Hobby
+F1,F-Verzekeringen,1-Leven/Begr.
+F2,F-Verzekeringen,2-Reizen
+F3,F-Verzekeringen,3-Rechtsbijstand
+F4,F-Verzekeringen,4-Fiets
+G1,G-Huishouding,"1-Eten,drinken, thuis (huishouden)"
+G2,G-Huishouding,2-Kleding
+G3,G-Huishouding,3-Lichamelijke Verzorging
+G4,G-Huishouding,4-Interieurverzorging
+G5,G-Huishouding,5-Tuinverzorging
+H1,H-Vertier,1-Uitjes
+H2,H-Vertier,2-Cafe en Restaurant
+H3,H-Vertier,3-Vliegvakantie
+H4,H-Vertier,4-Hotel
+H5,H-Vertier,5-Vervoer
+I1,I-Overige Kosten,1-Abonnementen
+I2,I-Overige Kosten,2-Telecom
+I3,I-Overige Kosten,3-Bank
+I4,I-Overige Kosten,4-Belasting (-)
+I5,I-Overige Kosten,5-Goederen
+I6,I-Overige Kosten,6-Giften
+I7,I-Overige Kosten,7-Cash Opnamen
+I8,I-Overige Kosten,8-Grote Eenmalige
+I9,I-Overige Kosten,9-Kansspelen
+I10,I-Overige Kosten,10-Overigen
+J1,J-Vestzak Broekzak,1-Eigenrekening
+J2,J-Vestzak Broekzak,2-Erven
+J3,J-Vestzak Broekzak,3-Diensten aan..
+J4,J-Vestzak Broekzak,4-Beleggen
+K1,K-Klussen,1-Klein Onderhoud
+K2,K-Klussen,2-Onderhoud huis
+M1,M-Beleggingen,1-Beleggen
+V1,V-Collecties,1-Betaalautomaat
+V2,V-Collecties,2-Geldautomaat
+V3,V-Collecties,3-Creditcard afschrijvingen
