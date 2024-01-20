@@ -1,0 +1,2 @@
+De files in deze directory zijn examples en dienen door gebruiker te worden uitgebreid.
+Voor een goede werking dienen ze een directory hoger te worden geplaatst.
