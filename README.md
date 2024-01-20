@@ -25,7 +25,7 @@ Directory structuur **bold** zijn directories
 		- Grootboeklijst.csv			Bevat de grootboek codes bv: A1 Inkomsten Loon 
 		- mapdescription-mappingtabel.csv	Bevat stukjes tekst in kolom description die verbonden zijn aan een grootboek code
 		- maptegenpartij-maptegenpartij.csv	Bevat stukjes tekst in kolom tegenpartij die verbonden zijn aan een grootboek code
-  - 		- accountnumbers.csv 			Bevat de rekening nummers 1: betaalrekeningen 2: Spaarrekeningen 3: beleggingen/lijrentes
+                - accountnumbers.csv 			Bevat de rekening nummers 1: betaalrekeningen 2: Spaarrekeningen 3: beleggingen/lijrentes
 		- **2024**
 			- volgnr_RABO2022.csv		Handmatig koppel een volgnummer aan een kleinboek code. 
 			- **invoer**
