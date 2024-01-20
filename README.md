@@ -27,7 +27,7 @@ Directory structuur **bold** zijn directories
 		- maptegenpartij-maptegenpartij.csv	Bevat stukjes tekst in kolom tegenpartij die verbonden zijn aan een grootboek code
                 - accountnumbers.csv 			Bevat de rekening nummers 1: betaalrekeningen 2: Spaarrekeningen 3: beleggingen/lijrentes
 		- **2024**
-			- volgnr_RABO2022.csv		Handmatig koppel een volgnummer aan een kleinboek code. 
+			- volgnr_RABO2024.csv		Handmatig koppel een volgnummer aan een kleinboek code. 
 			- **invoer**
 				- _all RaboBank csv_a files which contain transaction. from that year
 				- for example: CSV_A_20220205_124700.csv
