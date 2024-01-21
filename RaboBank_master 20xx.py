@@ -8,7 +8,7 @@
 # Kan worden gebruikt voor een geheel jaar of in de loop van een jaar
 # Inlezen van een of meerdere csv file van de Rabobank.
 # 
-# Manueel:
+# Manueel:clear
 # Toevoegen van de juiste grootboek codes
 # Toevoegen jaar en maand
 # Verwijderen van kolommen die je toch niet nodig hebt
@@ -43,9 +43,6 @@ import numpy as np
 from pathlib import Path
 
 
-# In[ ]:
-
-
 current_path = os.getcwd()
 
 
@@ -57,25 +54,33 @@ jaar = 2023
 jaar = str(jaar)
 
 
-# Deze files zijn jaartal specifiek volgnummers en uitvoer
+# De files zijn jaartal specifiek volgnummers en uitvoer
 # De benaming is standaard als je download van de rabobank app
+
+# Directory structuur 
+OutputDir = "rabobank/" + jaar + "/"
+DebugDir = "rabobank/" + jaar + "/"
+
+# Invoer files
 inVolgFile = "rabobank/" + jaar + "/volgnr_RABO" + jaar + ".csv"    #"rabobank/yyyy/volgnr_RABOxxxx.csv"
+   # Mapping tabellen zijn universeel mapping tabellen en grootboek codes.
+   # Prioriteit 1: volgnr_Rabo 2: Description 3: Tegenpartij
+mappingdescription="rabobank/mapdescription-mappingtabel.csv"
+maptegenpartij= "rabobank/maptegenpartij-maptegenpartij.csv"
+grootboek="rabobank/grootboeklijst.csv"
+accountnumbers = "rabobank/accountnumbers.csv"
+
+#Uitvoer files
 uitCSVFile = "rabobank/" + jaar + "/OUT_RABO" + jaar + ".csv"
 Uitvoerfile ="rabobank/" + jaar + "/OUT_RABO" + jaar + "_final.xlsx"
 UitvoerfilePartial  ="rabobank/" + jaar + "/OUT_RABO" + jaar + "_partial.xlsx"
 uitDebugFile = "rabobank/" + jaar + "/nog_volgnummer_nodig_RABO" + jaar + ".csv"
 UitTMP = "rabobank/" + jaar + "/temporary" + jaar + ".csv"
 
-OutputDir = "rabobank/" + jaar + "/"
-DebugDir = "rabobank/" + jaar + "/"
+# Bericht kompleet
 CompletedFile = OutputDir + "volgnr.completed"
 
-#Mapping tabellen zijn universeel mapping tabellen en grootboek codes.
-# Prioriteit 1: volgnr_Rabo 2: Description 3: Tegenpartij
-mappingdescription="rabobank/mapdescription-mappingtabel.csv"
-maptegenpartij= "rabobank/maptegenpartij-maptegenpartij.csv"
-grootboek="rabobank/grootboeklijst.csv"
-accountnumbers = "rabobank/accountnumbers.csv"
+
 
 
 # Overbodige files alvast weggooien
@@ -147,17 +152,14 @@ dfIn = pd.concat(parts)
 
 dfIn=dfIn.drop_duplicates(subset=None, keep="first", inplace=False)
 
-
 lengte_in = len(dfIn)
 
 # ### Kolommen toevoegen en bewerken
-
-
 #Toevoegen van maand en jaar
 dfIn['year'] = pd.DatetimeIndex(dfIn['Datum']).year                                   
 dfIn['month'] = pd.DatetimeIndex(dfIn['Datum']).month
 
-# Ik wil alleen de gegevens van jaar zien
+#  Ik wil alleen de gegevens van jaar zien
 
 dfIn= dfIn.loc[ (dfIn['year'] == int(jaar)) ]
 
@@ -185,15 +187,9 @@ dfIn = dfIn.loc[~dfIn['description'].str.contains(filter1)]
 dfCC=dfCC.drop_duplicates(subset=None, keep="first", inplace=False)
 
 
-# In[ ]:
-
 
 dfCC = pd.concat(cards)
 dfCC=dfCC.drop_duplicates(subset=None, keep="first", inplace=False)
-
-
-# In[ ]:
-
 
 # Kolommen weggooien
 dfCC = dfCC.drop(['Creditcard Regel1','Creditcard Regel2','Oorspr bedrag','Oorspr munt','Oorspr bedrag','Koers'], axis=1)
@@ -214,7 +210,6 @@ dfCC= dfCC.loc[ (dfCC['year'] == int(jaar)) ]
 dfCC = dfCC.loc[dfCC['description'] != 'Verrekening vorig overzicht']
 
 ### Creditcard en bank overzichten samenvoegen
-
 frames = [dfIn, dfCC]
 dfIn = pd.concat(frames)
 
@@ -231,8 +226,6 @@ dfIn["Naam tegenpartij"].fillna("leeg", inplace = True)
 
 dfGrootboek = pd.read_csv(grootboek)
 dfGrootboek.rename(columns={'Code':'category'}, inplace = True)
-
-
 # #### Mapping description
 map_code = pd.Series(dfMapDescription.code.values ,index=dfMapDescription.sleutel).to_dict()
 
@@ -244,7 +237,6 @@ def extract_codes(row):
         if item.lower() in row.lower():
             return map_code[item]
     return '--'
-
 
 #Apply function on column description and add a column
 dfIn['category'] = dfIn['description'].apply(extract_codes)
@@ -258,8 +250,7 @@ dfIn['category'] = dfIn['description'].apply(extract_codes)
 map_code = pd.Series(dfMapTegenPartij.code.values ,index=dfMapTegenPartij.tegenpartij).to_dict()
 #Apply function on column description and add a column
 dfIn['category2'] = dfIn['Naam tegenpartij'].apply(extract_codes)
-dfIn.info()
-
+#dfIn.info()
 
 # #### Er zijn nu wel twee category kolommen
 # Let op dat de getallen 22 en 23 kolommen zijn nl categorie en categorie2 
@@ -295,7 +286,7 @@ else:
 lengte_volgnr = len(dfVolg)
 
 
-dfVolg.info()
+#dfVolg.info()
 
 #Eerste is een overbodige kolom die gooi ik weg
 dfVolg = dfVolg.drop(dfVolg.columns[[0]], axis=1)  
@@ -321,7 +312,7 @@ def funcswitch(x):
 # Convert category_y en _X to string type to avoid errors in the funtion
 dfIn['category_x'] = dfIn['category_x'].astype('string')
 dfIn['category_y'] = dfIn['category_y'].astype('string')
-dfIn.info()
+#dfIn.info()
 
 # The new column is called cat when it has a value from the mapping it will be  preceeded with "_"
 # otherwise it gets the value from the volgnumber file
@@ -349,6 +340,7 @@ dfIn.rename(columns={'cat':'category'}, inplace = True)
 # #### Maak een lijsten van alle rekeningen en geef er een specifieke naam aan¶
 
 #Mapping table: sleutel(str) code(A1 etc)
+# Lees de input file met rekening nummers
 dfAccountnumbers = pd.read_csv(accountnumbers)
 
 dfBetaalRekeningen = dfAccountnumbers.loc[dfAccountnumbers['category'] == 1 ]
@@ -375,7 +367,6 @@ cashflow= ['','1-Inkomsten','2-Uitgaven',
 
 # Voeg te vullen kolom toe met een herkenbare default code
 dfIn['cashflow']="-"
-
 
 # ### 1 Hoofrekeningen (Beleggingen gaan alle vanaf hoofdrekening)¶
 
