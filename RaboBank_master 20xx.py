@@ -39,11 +39,8 @@ import plotly.express as px
 import numpy as np
 from pathlib import Path
 
+import mijnfuncties as m
 
-current_path = os.getcwd()
-
-
-# ### Definitie Jaartal
 
 
 # Deze variable stuurt voor welk jaartal er gekozen wordt.
@@ -55,56 +52,54 @@ jaar = str(jaar)
 # De benaming is standaard als je download van de rabobank app
 
 # Directory structuur 
-OutputDir = "rabobank/" + jaar + "/"
-DebugDir = "rabobank/" + jaar + "/"
+#nivo1
+current_path = os.getcwd()
+
+#nivo2   * Bevat generieke invoerfiles
+nivo2 = "rabobank/"
+
+# Nivo 3  *Jaar files output en messages per jaar *
+nivo3 = "rabobank/" + jaar + "/"
+nivo3prefix = "OUT_RABO" + jaar
+# Nivo 4  *Jaar files invor CSV's van rabobank *
+nivo4 = current_path + "/" + nivo3 + "invoer"
+print (nivo4)
 
 # Invoer files
-inVolgFile = "rabobank/" + jaar + "/volgnr_RABO" + jaar + ".csv"    #"rabobank/yyyy/volgnr_RABOxxxx.csv"
-   # Mapping tabellen zijn universeel mapping tabellen en grootboek codes.
-   # Prioriteit 1: volgnr_Rabo 2: Description 3: Tegenpartij
-mappingdescription="rabobank/mapdescription-mappingtabel.csv"
-maptegenpartij= "rabobank/maptegenpartij-maptegenpartij.csv"
-grootboek="rabobank/grootboeklijst.csv"
-accountnumbers = "rabobank/accountnumbers.csv"
+inVolgFile = nivo3 + "volgnr_RABO" + jaar + ".csv"    #"rabobank/yyyy/volgnr_RABOxxxx.csv"
+# Mapping tabellen zijn universeel mapping tabellen en grootboek codes.
+# Prioriteit 1: volgnr_Rabo 2: Description 3: Tegenpartij
+mappingdescription= nivo2+ "mapdescription-mappingtabel.csv"
+maptegenpartij= nivo2 + "maptegenpartij-maptegenpartij.csv"
+grootboek=nivo2 + "grootboeklijst.csv"
+accountnumbers = nivo2 + "accountnumbers.csv"
 
 #Uitvoer files
-uitCSVFile = "rabobank/" + jaar + "/OUT_RABO" + jaar + ".csv"
-Uitvoerfile ="rabobank/" + jaar + "/OUT_RABO" + jaar + "_final.xlsx"
-UitvoerfilePartial  ="rabobank/" + jaar + "/OUT_RABO" + jaar + "_partial.xlsx"
-uitDebugFile = "rabobank/" + jaar + "/nog_volgnummer_nodig_RABO" + jaar + ".csv"
-UitTMP = "rabobank/" + jaar + "/temporary" + jaar + ".csv"
+uitCSVFile = nivo3 + nivo3prefix + ".csv"
+Uitvoerfile = nivo3 + nivo3prefix+ "_final.xlsx"
+UitvoerfilePartial  = nivo3 + nivo3prefix+ "_partial.xlsx"
+uitDebugFile = nivo3 + nivo3prefix + ".csv"
+UitTMP = nivo3 + "temporary" + jaar + ".csv"
 
 # Bericht kompleet
-CompletedFile = OutputDir + "volgnr.completed"
+CompletedFile = nivo3 + "volgnr.completed"
 
 
-
-
-# Overbodige files alvast weggooien
-if os.path.exists(UitTMP):
-    os.remove(UitTMP)
-
-if os.path.exists(uitDebugFile):
-    os.remove(uitDebugFile)
-
-if os.path.exists(UitvoerfilePartial):
-    os.remove(UitvoerfilePartial)
-
-
-if os.path.exists(CompletedFile):
-    os.remove(CompletedFile)    
-
+# Verwijder alle overbodig files 
+m.delfile(UitTMP)
+m.delfile(uitDebugFile)
+m.delfile(UitvoerfilePartial)
+m.delfile(CompletedFile)
 
 # ### Inlezen en duplicaten weggooien
     
 # Verkrijg het directory van de jupyter file.
-path = current_path + "/rabobank/" + jaar + "/invoer"
-os.chdir(path)
+# path = current_path + "/rabobank/" + jaar + "/invoer"
+os.chdir(nivo4)
 
 #Verzamel alle csv files die daarin worden gedumpt. Ze moeten beginnen met CSV_A voor de standaard rekeningen
 all_filenames = [i for i in glob.glob("CSV_A*.csv")]
 all_creditcardfiles = [i for i in glob.glob("CSV_CC*.csv")]
-
 
 # Read in all RaboBank jaar csv Files from  subfolder rabobank the csv files stay untouched.
 parts=[]
@@ -226,6 +221,7 @@ dfGrootboek.rename(columns={'Code':'category'}, inplace = True)
 # #### Mapping description
 map_code = pd.Series(dfMapDescription.code.values ,index=dfMapDescription.sleutel).to_dict()
 
+
 # De magic function van stack overflow geeft een waarde of "--"
 
 def extract_codes(row):
@@ -254,13 +250,11 @@ dfIn['category2'] = dfIn['Naam tegenpartij'].apply(extract_codes)
 # Daarbij is de mapping op description (categorie) leidend alleen als de mapping op tegenpartij iets oplevert wordt die waarde 
 # toegekend aan de nieuwe kolom 'cat' 
 
-def func(x):
-    if x.iloc[23] != '--':
-        return x.iloc[23]
-    return x.iloc[22]
+#  def func(x):
 
 
-dfIn['cat'] = dfIn.apply(func,axis=1)
+
+dfIn['cat'] = dfIn.apply(m.func,axis=1)
 dfIn.pop('category')
 dfIn.pop('category2')
 # Rename the newly made category
@@ -299,11 +293,9 @@ dfIn=dfIn.merge(dfVolg, how="left", on="Volgnr")
 
 #dfIn.to_csv(DebugDir+"0.csv")
 
-def funcswitch(x):
-    #if (pd.isnull(x[23])):
-    if (pd.isnull(x.iloc[23])) | (x.iloc[23] == '--'):        
-        return x.iloc[22]
-    return x.iloc[23]
+
+#def funcswitch(x):
+
 
 
 # Convert category_y en _X to string type to avoid errors in the funtion
@@ -313,7 +305,7 @@ dfIn['category_y'] = dfIn['category_y'].astype('string')
 
 # The new column is called cat when it has a value from the mapping it will be  preceeded with "_"
 # otherwise it gets the value from the volgnumber file
-dfIn['cat'] = dfIn.apply(funcswitch,axis=1)
+dfIn['cat'] = dfIn.apply(m.funcswitch,axis=1)
 
 # #### En weer heb ik twee category kolommen
 # delete the category columns they are superfluous now 
@@ -477,7 +469,7 @@ if len(dfUitDebug) >0 :
 else:
     # Write empty dataframe and give a message in the filename
     completed = True
-    dfUitDebug.to_csv(OutputDir + "volgnr.completed")
+    dfUitDebug.to_csv(nivo3 + "volgnr.completed")
 
 
 # ## Uitvoer
